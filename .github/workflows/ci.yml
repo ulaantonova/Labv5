@@ -40,4 +40,4 @@ jobs:
     # 5. Автоматична збірка Docker-образу
     - name: Build Docker Image
       run: |
-        docker build -t api-service:latest .g
+        docker build -t api-service:latest .
