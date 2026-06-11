@@ -1,4 +1,4 @@
-
+import os
 from fastapi import FastAPI, Query
 from datetime import datetime
 
@@ -13,7 +13,6 @@ async def calculate(
     Ендпоінт для розрахунку параметрів руху судна.
     """
     ship_name = "AutoShip-01"
-    
     
     if mode.lower() == 'eco':
         speed = 12.0  # обмеження швидкості
@@ -39,5 +38,11 @@ async def calculate(
 
 if __name__ == "__main__":
     import uvicorn
-   
-    uvicorn.run(app, host="127.0.0.1", port=5000)
+    
+    # БЕЗПЕКА ТА ХМАРА: 
+    # 1. Render сам призначить порт через змінну оточення PORT. Якщо її немає — беремо 5000.
+    port = int(os.getenv("PORT", 5000))
+    
+    # 2. Для хмари обов'язково ставимо host="0.0.0.0", щоб сервіс слухав зовнішні запити.
+    # 3. Вимикаємо вбудований reload/debug у хмарі (керуємо через логіку змінних, якщо треба).
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
